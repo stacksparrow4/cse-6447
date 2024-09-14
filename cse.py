@@ -37,6 +37,7 @@ def run_remote_cmd(x):
 
 def upload_executable_file(file_location):
   filename = os.path.basename(file_location)
+  assert run_remote_cmd(f"rm -f {filename}") == 0
   get_ssh().upload_file(file_location, filename)
   assert run_remote_cmd(f'chmod +x {filename}') == 0
 
@@ -65,8 +66,8 @@ def cse_gdb_debug(argv, *args, **kwargs):
 
 orig_gdb_attach = pwn.gdb.attach
 def cse_gdb_attach(target, gdbscript='', exe=None, gdb_args=None, sysroot=None, api=False):
-  if not os.path.exists("/tmp/pwntoolscode-waiting"):
-    print("Tried to spawn terminal but VSCode did not have the terminal waiting.")
+  if not os.path.exists("/tmp/pwntoolscode-task"):
+    print("Tried to spawn terminal but VSCode was not executing the task.")
     print("Perhaps you forgot to run using the Play button in VSCode?")
     exit(1)
 
@@ -80,3 +81,6 @@ def create_callable_constructor(callable):
 patch('pwn.process', new_callable=create_callable_constructor(cse_process)).start()
 patch('pwn.gdb.debug', new_callable=create_callable_constructor(cse_gdb_debug)).start()
 patch('pwn.gdb.attach', new_callable=create_callable_constructor(cse_gdb_attach)).start()
+
+if __name__ == '__main__':
+  print("Looks like you executed cse.py. Is this what you meant to do?")
