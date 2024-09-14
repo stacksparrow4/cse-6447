@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "debugWithGdb",
+          "dependsOn": ["runProgram", "runGdb"]
+      },
+      {
+          "label": "runProgram",
+          "type": "shell",
+          "command": "python3 \"$(cat /tmp/pwntoolscode-prog)\"",
+          "presentation": {
+              "group": "gdbGroup"
+          }
+      },
+      {
+          "label": "runGdb",
+          "type": "shell",
+          "command": "touch /tmp/pwntoolscode-waiting; while [ ! -f /tmp/pwntoolscode-dbgcmd ]; do sleep 0.1; done; cat /tmp/pwntoolscode-dbgcmd; bash /tmp/pwntoolscode-dbgcmd",
+          "presentation": {
+              "group": "gdbGroup"
+          }
+      }
+  ]
+}

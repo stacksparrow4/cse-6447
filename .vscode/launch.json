@@ -1,0 +1,11 @@
+{
+  "configurations": [
+      {
+          "name": "Pwntools GDB",
+          "type": "node-terminal",
+          "postDebugTask": "debugWithGdb",
+          "request": "launch",
+          "command": "rm -f /tmp/pwntoolscode-dbgcmd /tmp/pwntoolscode-waiting; echo \"${file}\" > /tmp/pwntoolscode-prog; exit"
+      }
+  ]
+}
