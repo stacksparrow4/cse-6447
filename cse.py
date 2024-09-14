@@ -80,23 +80,3 @@ def create_callable_constructor(callable):
 patch('pwn.process', new_callable=create_callable_constructor(cse_process)).start()
 patch('pwn.gdb.debug', new_callable=create_callable_constructor(cse_gdb_debug)).start()
 patch('pwn.gdb.attach', new_callable=create_callable_constructor(cse_gdb_attach)).start()
-
-if __name__ == '__main__':
-  def show_usage():
-    print("Usage:")
-    print("\tpython3 cse.py run ./binary <args>")
-    print("\tpython3 cse.py gdb ./binary")
-    exit(1)
-
-  if len(sys.argv) < 3:
-    show_usage()
-  
-  if sys.argv[1].lower() == "run":
-    cse_process(sys.argv[2:]).interactive()
-  elif sys.argv[1].lower() == "gdb":
-    if len(sys.argv) != 3:
-      print("Additional commands to gdb are not yet supported!")
-      show_usage()
-    cse_gdb_debug(sys.argv[2]).interactive()
-  else:
-    show_usage()
